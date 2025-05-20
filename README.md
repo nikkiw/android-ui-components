@@ -1,7 +1,7 @@
 <div id="top">
 
 <!-- HEADER STYLE: COMPACT -->
-<img src="./docs/images/ui-components.png" width="30%" align="left" style="margin-right: 15px">
+<img src="./docs/images/logo-ui-components.png" width="30%" align="left" style="margin-right: 15px" alt="ui components logo">
 
 # ANDROID-UI-COMPONENTS
 
@@ -29,7 +29,6 @@ layouts and classic UI development.</em>
     - [🔆 Usage](#-usage)
     - [🌠 Testing](#-testing)
 - [🌻 Roadmap](#-roadmap)
-- [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
 - [✨ Acknowledgments](#-acknowledgments)
 
