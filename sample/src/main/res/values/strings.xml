@@ -1,28 +1,27 @@
 <resources>
     <string name="app_name">"UI Components Sample"</string>
-    <string name="nav_drawer_open">"Открыть навигацию"</string>
-    <string name="nav_drawer_close">"Закрыть навигацию"</string>
-    <string name="basic_shimmer">"Базовый ShimmerView"</string>
-    <string name="basic_shimmer_gpu">"Базовый ShimmerView (GPU)"</string>
-    <string name="list_shimmer">"ShimmerView в списках"</string>
-    <string name="card_shimmer">"ShimmerView для карточек"</string>
-    <string name="control_shimmer">"Управление ShimmerView"</string>
-    <string name="custom_shimmer">"Расширения ShimmerView"</string>
+    <string name="nav_drawer_open">"Open navigation"</string>
+    <string name="nav_drawer_close">"Close navigation"</string>
+    <string name="nav_header_text2">"ShimmerView demo"</string>
+    <string name="basic_shimmer">"Basic ShimmerView"</string>
+    <string name="basic_shimmer_gpu">"Basic ShimmerView (GPU)"</string>
+    <string name="list_shimmer">"ShimmerView in lists"</string>
+    <string name="card_shimmer">"ShimmerView for cards"</string>
+    <string name="control_shimmer">"ShimmerView control"</string>
+    <string name="custom_shimmer">"ShimmerView extensions"</string>
 
-
-    <!-- Строки для BasicShimmerFragment -->
-    <string name="base_shimmer_title">"Базовый пример ShimmerView"</string>
-    <string name="base_shimmer_status">"Статус анимации"</string>
-    <string name="base_shimmer_start">"Старт"</string>
-    <string name="base_shimmer_stop">"Стоп"</string>
-    <string name="base_shimmer_content">"Контент"</string>
-    <string name="base_shimmer_shimmer">"Шиммер"</string>
-    <string name="base_shimmer_status_shimmer_start">"Shimmer анимация запущена"</string>
-    <string name="base_shimmer_status_shimmer_stop">"Shimmer анимация остановлена"</string>
-    <string name="base_shimmer_status_content">"Отображение реального контента"</string>
-    <string name="base_shimmer_status_placeholder">"Отображение placeholders с shimmer-эффектом"</string>
-    <string name="item_real_content_title">"Заголовок элемента"</string>
-    <string name="item_real_content_long_text">"Это пример реального контента, который будет отображаться вместо placeholder-элементов после загрузки данных. Вы можете переключаться между реальным контентом и placeholder-элементами с помощью кнопки 'Контент'."</string>
-    <string name="item_real_content_more">"Подробнее"</string>
-
+    <!-- Strings for BasicShimmerFragment -->
+    <string name="base_shimmer_title">"Basic ShimmerView example"</string>
+    <string name="base_shimmer_status">"Animation status"</string>
+    <string name="base_shimmer_start">"Start"</string>
+    <string name="base_shimmer_stop">"Stop"</string>
+    <string name="base_shimmer_content">"Content"</string>
+    <string name="base_shimmer_shimmer">"Shimmer"</string>
+    <string name="base_shimmer_status_shimmer_start">"Shimmer animation started"</string>
+    <string name="base_shimmer_status_shimmer_stop">"Shimmer animation stopped"</string>
+    <string name="base_shimmer_status_content">"Displaying real content"</string>
+    <string name="base_shimmer_status_placeholder">"Displaying placeholders with shimmer effect"</string>
+    <string name="item_real_content_title">"Item title"</string>
+    <string name="item_real_content_long_text">"This is an example of real content that will be displayed instead of placeholder elements after the data is loaded. You can switch between real content and placeholder elements using the 'Content' button."</string>
+    <string name="item_real_content_more">"Read more"</string>
 </resources>
