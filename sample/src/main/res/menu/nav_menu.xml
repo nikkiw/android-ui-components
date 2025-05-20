@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_basic_shimmer"
+            android:title="@string/basic_shimmer" />
+        <item
+            android:id="@+id/nav_basic_shimmer_gpu"
+            android:title="@string/basic_shimmer_gpu" />
+        <!--        <item-->
+        <!--            android:id="@+id/nav_list_shimmer"-->
+        <!--            android:icon="@drawable/ic_list_shimmer"-->
+        <!--            android:title="@string/list_shimmer" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_card_shimmer"-->
+        <!--            android:icon="@drawable/ic_card_shimmer"-->
+        <!--            android:title="@string/card_shimmer" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_control_shimmer"-->
+        <!--            android:icon="@drawable/ic_control_shimmer"-->
+        <!--            android:title="@string/control_shimmer" />-->
+        <!--        <item-->
+        <!--            android:id="@+id/nav_custom_shimmer"-->
+        <!--            android:icon="@drawable/ic_custom_shimmer"-->
+        <!--            android:title="@string/custom_shimmer" />-->
+    </group>
+</menu>

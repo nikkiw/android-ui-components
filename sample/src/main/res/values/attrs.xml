@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Атрибуты для CustomShimmerColor -->
+    <declare-styleable name="CustomShimmerColor">
+        <attr name="shimmerStartColor" format="color" />
+        <attr name="shimmerMiddleColor" format="color" />
+        <attr name="shimmerEndColor" format="color" />
+    </declare-styleable>
+
+    <!-- Размеры для placeholder элементов -->
+    <dimen name="placeholder_height">24dp</dimen>
+    <dimen name="placeholder_margin">8dp</dimen>
+    <dimen name="card_placeholder_height">160dp</dimen>
+    <dimen name="card_image_height">120dp</dimen>
+    <dimen name="card_title_height">24dp</dimen>
+    <dimen name="card_description_height">36dp</dimen>
+</resources>
