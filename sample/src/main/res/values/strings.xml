@@ -24,4 +24,11 @@
     <string name="item_real_content_title">"Item title"</string>
     <string name="item_real_content_long_text">"This is an example of real content that will be displayed instead of placeholder elements after the data is loaded. You can switch between real content and placeholder elements using the 'Content' button."</string>
     <string name="item_real_content_more">"Read more"</string>
+
+
+    <!-- Strings for ProgressGridFragment -->
+    <string name="progress_grid_title">"Progress Grid example"</string>
+    <string name="progress_grid_status_shimmer_start">"Progress Grid animation started"</string>
+    <string name="progress_grid_status_shimmer_stop">"Progress Grid animation stopped"</string>
+
 </resources>

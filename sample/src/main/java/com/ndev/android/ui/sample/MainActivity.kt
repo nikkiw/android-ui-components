@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.ndev.android.ui.sample.fragments.progress_grid.ProgressGridFragment
 import com.ndev.android.ui.sample.fragments.shimmerview.BasicShimmerFragment
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -62,22 +63,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = BasicShimmerFragment.newInstance(R.layout.fragment_basic_shimmer_gpu)
                 title = getString(R.string.basic_shimmer_gpu)
             }
-//            R.id.nav_list_shimmer -> {
-//                fragment = ListShimmerFragment()
-//                title = getString(R.string.list_shimmer)
-//            }
-//            R.id.nav_card_shimmer -> {
-//                fragment = CardShimmerFragment()
-//                title = getString(R.string.card_shimmer)
-//            }
-//            R.id.nav_control_shimmer -> {
-//                fragment = ControlShimmerFragment()
-//                title = getString(R.string.control_shimmer)
-//            }
-//            R.id.nav_custom_shimmer -> {
-//                fragment = CustomShimmerFragment()
-//                title = getString(R.string.custom_shimmer)
-//            }
+
+            R.id.nav_progress_grid -> {
+                fragment = ProgressGridFragment.newInstance(R.layout.fragment_progress_grid)
+                title = getString(R.string.progress_grid_title)
+            }
             else -> {
                 fragment = BasicShimmerFragment()
                 title = getString(R.string.basic_shimmer)

@@ -14,6 +14,13 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    testOptions {
+        targetSdk = com.config.Config.TARGET_SDK
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -48,10 +55,15 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core.ktx)
+
 
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.rules)
+//    androidTestImplementation(libs.kaspresso)
 }

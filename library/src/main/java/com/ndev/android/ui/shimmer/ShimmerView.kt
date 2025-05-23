@@ -14,19 +14,43 @@ import android.widget.FrameLayout
 import androidx.core.graphics.withClip
 import androidx.core.view.isVisible
 
+/**
+ * A custom FrameLayout that applies a shimmering gradient animation over its visible children.
+ *
+ * This view creates a horizontal LinearGradient shader with transparent edges and a white center,
+ * and animates it from left to right repeatedly. The shimmer effect is clipped to the bounds of
+ * the visible child views, creating a highlight sweep across the content.
+ *
+ * @constructor Creates a ShimmerView using the provided context, attribute set, and style.
+ * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource
+ *                     that supplies default values for the view. Can be 0 to not look for defaults.
+ */
 class ShimmerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    /** Paint used to draw the shimmer gradient. */
     private val shimmerPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val shaderMatrix = Matrix()
     private var shimmerAnimator: ValueAnimator? = null
     private var shimmerTranslate = 0f
 
+    /**
+     * Called when the size of this view changes. Initializes or updates the shader used for the shimmer effect.
+     *
+     * @param w Current width of the view.
+     * @param h Current height of the view.
+     * @param oldw Previous width of the view.
+     * @param oldh Previous height of the view.
+     */
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w > 0 && h > 0) {
-            // Инициализируем горизонтальный градиент с прозрачными краями и белым центром
+            // Initialize a horizontal gradient with transparent edges and a white center
             shimmerPaint.shader = LinearGradient(
                 0f, 0f, w.toFloat(), 0f,
                 intArrayOf(Color.TRANSPARENT, Color.WHITE, Color.TRANSPARENT),
@@ -36,11 +60,16 @@ class ShimmerView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Draws the shimmer effect on top of the child views. Clips the shimmer to the bounds of visible children.
+     *
+     * @param canvas The Canvas on which the background will be drawn.
+     */
     override fun dispatchDraw(canvas: Canvas) {
-        // Сначала отрисовываем дочерние view
+        // First, draw child views normally
         super.dispatchDraw(canvas)
 
-        // Формируем Path, который объединяет области всех видимых дочерних элементов
+        // Create a Path combining the bounds of all visible children for clipping
         val maskPath = Path().apply {
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
@@ -56,19 +85,22 @@ class ShimmerView @JvmOverloads constructor(
             }
         }
 
-        // Сохраняем состояние canvas и ограничиваем область отрисовки маской
+        // Clip the drawing area to the combined mask of children
         canvas.withClip(maskPath) {
-            // Обновляем матрицу градиента согласно текущему значению shimmerTranslate
+            // Translate the gradient shader according to the current shimmerTranslate value
             shaderMatrix.setTranslate(shimmerTranslate, 0f)
             shimmerPaint.shader?.setLocalMatrix(shaderMatrix)
 
-            // Рисуем градиент по всей области контейнера — он появится только внутри области maskPath
+            // Draw the gradient across the entire container; only visible through the mask
             canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), shimmerPaint)
         }
     }
 
+    /**
+     * Starts the shimmer animation. If the view has not been laid out yet, delays start until dimensions are known.
+     */
     fun startShimmer() {
-        // Если размеры еще не установлены, отложим запуск анимации
+        // If size is not yet established, retry after a frame
         if (width == 0 || height == 0) {
             postDelayed({ startShimmer() }, 32)
             return
@@ -79,29 +111,37 @@ class ShimmerView @JvmOverloads constructor(
             repeatCount = ValueAnimator.INFINITE
             addUpdateListener { animation ->
                 shimmerTranslate = animation.animatedValue as Float
-                // Обеспечиваем плавную перерисовку
+                // Trigger a redraw on each animation frame
                 postInvalidateOnAnimation()
             }
             start()
         }
     }
 
-
+    /**
+     * Stops the shimmer animation and resets state. Removes any attached listeners.
+     */
     fun stopShimmer() {
         shimmerAnimator?.apply {
-            removeAllUpdateListeners() // Удаляем все слушатели обновления анимации
+            removeAllUpdateListeners()
             cancel()
         }
         shimmerAnimator = null
+        // Invalidate to clear any remaining shimmer frame
         postInvalidate()
     }
 
-
+    /**
+     * Called when the view is attached to a window. Automatically starts the shimmer effect.
+     */
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         startShimmer()
     }
 
+    /**
+     * Called when the view is detached from a window. Stops the shimmer animation to avoid leaks.
+     */
     override fun onDetachedFromWindow() {
         stopShimmer()
         super.onDetachedFromWindow()

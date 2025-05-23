@@ -7,6 +7,9 @@
         <item
             android:id="@+id/nav_basic_shimmer_gpu"
             android:title="@string/basic_shimmer_gpu" />
+        <item
+            android:id="@+id/nav_progress_grid"
+            android:title="@string/progress_grid_title" />
         <!--        <item-->
         <!--            android:id="@+id/nav_list_shimmer"-->
         <!--            android:icon="@drawable/ic_list_shimmer"-->
