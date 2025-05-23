@@ -50,6 +50,27 @@ android-ui-components/
     * Default style in `res/values/styles.xml`.
     * Example layout in `res/layout/view_shimmer.xml`.
 
+### ProgressGridLayout
+
+A custom `FrameLayout` that displays a grid-based progress reveal effect with an optional animated light wave overlay. Designed for use cases where you want to visually indicate loading or progress in a grid (e.g., image galleries, dashboards).
+
+**Features:**
+- Configurable number of rows and columns
+- Smooth reveal animation for grid cells
+- Optional animated light wave overlay
+- Customizable overlay color and animation duration
+- Supports XML and programmatic usage
+
+**Public API:**
+- `start()`: Starts the progress reveal animation and triggers the light wave effect when finished
+- `stop()`: Stops all animations and resets the overlay
+- `animationDuration`: Duration of the reveal animation (ms)
+- `overlayColor`: Color of the overlay (ARGB)
+- `gridRows`, `gridCols`: Number of rows and columns in the grid
+
+**Resources:**
+- Example layout in `res/layout/progress_grid_layout.xml`
+
 ## sample Module
 
 * **Purpose:** Showcase `ShimmerView` in a standalone demo app.

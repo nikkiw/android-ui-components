@@ -141,6 +141,7 @@ Note: Instrumented UI tests require an emulator or device.
 - [X] Implement base shimmer UI components (CPU-based)
 - [X] Add GPU-accelerated shimmer implementation
 - [X] Setup benchmarking infrastructure to compare shimmer performance
+- [X] Add ProgressGridLayout component with animated grid reveal and light wave effect
 - [ ] Expand with more customizable UI placeholders and loaders
 - [ ] Add comprehensive unit and UI tests coverage
 - [ ] Publish library to Maven Central / JCenter for easy integration
@@ -160,6 +161,51 @@ details.
 - Thanks to all contributors and users inspiring the project.
 - Inspired by popular Android UI libraries and Google’s Material Design guidelines.
 - Special mention to the Android community for sharing knowledge on UI performance optimization.
+
+---
+
+## ✨ ProgressGridLayout
+
+A new component, `ProgressGridLayout`, is now available in the library. It provides a grid-based progress reveal effect with an optional animated light wave overlay. This is useful for visually indicating loading or progress states in a grid layout, such as image galleries or dashboards.
+
+### Features
+- Customizable grid size (rows and columns)
+- Smooth reveal animation for grid cells
+- Optional animated light wave overlay for enhanced visual feedback
+- Configurable overlay color and animation duration
+- Easy integration via XML or programmatically
+
+### Usage Example
+
+**XML:**
+```xml
+<com.ndev.android.ui.progress_grid.ProgressGridLayout
+    android:id="@+id/progress_grid"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:animationDuration="2000"
+    app:gridRows="8"
+    app:gridCols="8"
+    app:overlayColor="#AAFFFFFF">
+    <!-- Your content here -->
+</com.ndev.android.ui.progress_grid.ProgressGridLayout>
+```
+
+**Kotlin:**
+```kotlin
+val progressGrid = findViewById<ProgressGridLayout>(R.id.progress_grid)
+progressGrid.start() // Starts the reveal animation
+progressGrid.stop()  // Stops and resets the animation
+```
+
+### API
+- `start()`: Starts the progress reveal animation. When finished, triggers the light wave effect.
+- `stop()`: Stops all animations and resets the overlay.
+- `animationDuration`: Duration of the reveal animation (ms).
+- `overlayColor`: Color of the overlay (ARGB).
+- `gridRows`, `gridCols`: Number of rows and columns in the grid.
+
+See the sample app for a live demonstration and integration patterns.
 
 <div align="right">
 
