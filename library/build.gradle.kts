@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -66,4 +67,20 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.rules)
 //    androidTestImplementation(libs.kaspresso)
+}
+
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = "com.github.nikkiw"
+            artifactId = "android-ui-components"
+            version = "0.0.1"
+
+            // Ensure the component is evaluated before publishing
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }
