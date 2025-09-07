@@ -39,6 +39,8 @@ class ShimmerView @JvmOverloads constructor(
     private var shimmerAnimator: ValueAnimator? = null
     private var shimmerTranslate = 0f
 
+    private val startShimmerRunnable = Runnable { startShimmer() }
+
     /**
      * Called when the size of this view changes. Initializes or updates the shader used for the shimmer effect.
      *
@@ -100,9 +102,11 @@ class ShimmerView @JvmOverloads constructor(
      * Starts the shimmer animation. If the view has not been laid out yet, delays start until dimensions are known.
      */
     fun startShimmer() {
+        removeCallbacks(startShimmerRunnable)
+
         // If size is not yet established, retry after a frame
         if (width == 0 || height == 0) {
-            postDelayed({ startShimmer() }, 32)
+            postDelayed(startShimmerRunnable, 32)
             return
         }
         shimmerAnimator?.cancel()
@@ -122,6 +126,8 @@ class ShimmerView @JvmOverloads constructor(
      * Stops the shimmer animation and resets state. Removes any attached listeners.
      */
     fun stopShimmer() {
+        removeCallbacks(startShimmerRunnable)
+
         shimmerAnimator?.apply {
             removeAllUpdateListeners()
             cancel()
