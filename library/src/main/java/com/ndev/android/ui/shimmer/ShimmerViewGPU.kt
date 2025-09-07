@@ -46,6 +46,8 @@ class ShimmerViewGPU @JvmOverloads constructor(
     /** Path defining the union of child view bounds to mask the shimmer effect. */
     private var maskPath: Path? = null
 
+    private val startShimmerRunnable = Runnable { startShimmer() }
+
     init {
         // Enable hardware layer for better performance of the shader
         setLayerType(LAYER_TYPE_HARDWARE, shimmerPaint)
@@ -145,9 +147,11 @@ class ShimmerViewGPU @JvmOverloads constructor(
      * If the view has not been measured yet, retries after a short delay.
      */
     fun startShimmer() {
+        removeCallbacks(startShimmerRunnable)
+
         if (width == 0 || height == 0) {
             // Wait until layout is complete
-            postDelayed({ startShimmer() }, 32)
+            postDelayed(startShimmerRunnable, 32)
             return
         }
 
@@ -170,6 +174,8 @@ class ShimmerViewGPU @JvmOverloads constructor(
      * Stops the shimmer animation and invalidates the view.
      */
     fun stopShimmer() {
+        removeCallbacks(startShimmerRunnable)
+
         shimmerAnimator?.run {
             removeAllUpdateListeners()
             cancel()
