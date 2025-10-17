@@ -10,9 +10,17 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Shader
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import androidx.core.graphics.withClip
 import androidx.core.view.isVisible
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.launch
 
 /**
  * A custom FrameLayout that applies a shimmering gradient animation over its visible children.
@@ -20,6 +28,9 @@ import androidx.core.view.isVisible
  * This view creates a horizontal LinearGradient shader with transparent edges and a white center,
  * and animates it from left to right repeatedly. The shimmer effect is clipped to the bounds of
  * the visible child views, creating a highlight sweep across the content.
+ *
+ * The animation is automatically paused when the view is not visible or when the host
+ * Activity/Fragment is paused.
  *
  * @constructor Creates a ShimmerView using the provided context, attribute set, and style.
  * @param context The Context the view is running in, through which it can access the current theme, resources, etc.
@@ -33,13 +44,23 @@ class ShimmerView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    /** Paint used to draw the shimmer gradient. */
     private val shimmerPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val shaderMatrix = Matrix()
+
     private var shimmerAnimator: ValueAnimator? = null
     private var shimmerTranslate = 0f
+    private var shimmerJob: Job? = null
 
-    private val startShimmerRunnable = Runnable { startShimmer() }
+    // A lifecycle observer to pause/resume the animation.
+    private val lifecycleObserver = object : DefaultLifecycleObserver {
+        override fun onResume(owner: LifecycleOwner) {
+            resumeShimmer()
+        }
+
+        override fun onPause(owner: LifecycleOwner) {
+            pauseShimmer()
+        }
+    }
 
     /**
      * Called when the size of this view changes. Initializes or updates the shader used for the shimmer effect.
@@ -52,7 +73,6 @@ class ShimmerView @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (w > 0 && h > 0) {
-            // Initialize a horizontal gradient with transparent edges and a white center
             shimmerPaint.shader = LinearGradient(
                 0f, 0f, w.toFloat(), 0f,
                 intArrayOf(Color.TRANSPARENT, Color.WHITE, Color.TRANSPARENT),
@@ -68,88 +88,113 @@ class ShimmerView @JvmOverloads constructor(
      * @param canvas The Canvas on which the background will be drawn.
      */
     override fun dispatchDraw(canvas: Canvas) {
-        // First, draw child views normally
         super.dispatchDraw(canvas)
+        // Only draw the shimmer if the animator is running.
+        if (shimmerAnimator?.isRunning != true) return
 
-        // Create a Path combining the bounds of all visible children for clipping
         val maskPath = Path().apply {
             for (i in 0 until childCount) {
                 val child = getChildAt(i)
                 if (child.isVisible) {
                     addRect(
-                        child.left.toFloat(),
-                        child.top.toFloat(),
-                        child.right.toFloat(),
-                        child.bottom.toFloat(),
+                        child.left.toFloat(), child.top.toFloat(),
+                        child.right.toFloat(), child.bottom.toFloat(),
                         Path.Direction.CW
                     )
                 }
             }
         }
 
-        // Clip the drawing area to the combined mask of children
         canvas.withClip(maskPath) {
-            // Translate the gradient shader according to the current shimmerTranslate value
             shaderMatrix.setTranslate(shimmerTranslate, 0f)
             shimmerPaint.shader?.setLocalMatrix(shaderMatrix)
-
-            // Draw the gradient across the entire container; only visible through the mask
             canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), shimmerPaint)
         }
     }
 
     /**
-     * Starts the shimmer animation. If the view has not been laid out yet, delays start until dimensions are known.
+     * Starts a coroutine that waits for the view to be laid out, then creates and starts the animator.
      */
     fun startShimmer() {
-        removeCallbacks(startShimmerRunnable)
-
-        // If size is not yet established, retry after a frame
-        if (width == 0 || height == 0) {
-            postDelayed(startShimmerRunnable, 32)
-            return
-        }
-        shimmerAnimator?.cancel()
-        shimmerAnimator = ValueAnimator.ofFloat(-width.toFloat(), width.toFloat()).apply {
-            duration = 1500
-            repeatCount = ValueAnimator.INFINITE
-            addUpdateListener { animation ->
-                shimmerTranslate = animation.animatedValue as Float
-                // Trigger a redraw on each animation frame
-                postInvalidateOnAnimation()
+        shimmerJob?.cancel()
+        shimmerJob = findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            // Wait until the view has valid dimensions.
+            while (width == 0 || height == 0) {
+                awaitFrame()
             }
-            start()
+            // Create and start the animator if it doesn't exist yet.
+            if (shimmerAnimator == null) {
+                shimmerAnimator = ValueAnimator.ofFloat(-width.toFloat(), width.toFloat()).apply {
+                    duration = 1500
+                    repeatCount = ValueAnimator.INFINITE
+                    addUpdateListener { animation ->
+                        shimmerTranslate = animation.animatedValue as Float
+                        invalidate()
+                    }
+                    start()
+                }
+            }
         }
     }
 
     /**
-     * Stops the shimmer animation and resets state. Removes any attached listeners.
+     * Pauses the animation.
+     */
+    fun pauseShimmer() {
+        shimmerAnimator?.pause()
+    }
+
+    /**
+     * Resumes the animation if it was paused.
+     */
+    fun resumeShimmer() {
+        // Only resume if the view is visible.
+        if (visibility == View.VISIBLE) {
+            shimmerAnimator?.resume()
+        }
+    }
+
+    /**
+     * Completely stops and cancels the animation.
      */
     fun stopShimmer() {
-        removeCallbacks(startShimmerRunnable)
-
-        shimmerAnimator?.apply {
-            removeAllUpdateListeners()
-            cancel()
-        }
+        shimmerJob?.cancel()
+        shimmerJob = null
+        shimmerAnimator?.cancel()
         shimmerAnimator = null
-        // Invalidate to clear any remaining shimmer frame
-        postInvalidate()
+        invalidate()
     }
 
     /**
-     * Called when the view is attached to a window. Automatically starts the shimmer effect.
+     * Called when the view is attached to a window.
+     * Starts the animation and registers the lifecycle observer.
      */
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        findViewTreeLifecycleOwner()?.lifecycle?.addObserver(lifecycleObserver)
         startShimmer()
     }
 
     /**
-     * Called when the view is detached from a window. Stops the shimmer animation to avoid leaks.
+     * Called when the view is detached from a window.
+     * Stops the animation and unregisters the observer to prevent leaks.
      */
     override fun onDetachedFromWindow() {
         stopShimmer()
+        findViewTreeLifecycleOwner()?.lifecycle?.removeObserver(lifecycleObserver)
         super.onDetachedFromWindow()
+    }
+
+    /**
+     * Called when the visibility of the view changes.
+     * Pauses or resumes the animation based on the new visibility state.
+     */
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        if (visibility == View.VISIBLE) {
+            resumeShimmer()
+        } else {
+            pauseShimmer()
+        }
     }
 }
