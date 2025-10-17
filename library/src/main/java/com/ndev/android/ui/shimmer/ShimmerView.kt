@@ -12,6 +12,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.VisibleForTesting
 import androidx.core.graphics.withClip
 import androidx.core.view.isVisible
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -196,5 +197,20 @@ class ShimmerView @JvmOverloads constructor(
         } else {
             pauseShimmer()
         }
+    }
+
+    @VisibleForTesting
+    internal fun isAnimatorRunning(): Boolean {
+        return shimmerAnimator?.isRunning == true
+    }
+
+    @VisibleForTesting
+    internal fun isAnimatorPaused(): Boolean {
+        return shimmerAnimator?.isPaused == true
+    }
+
+    @VisibleForTesting
+    internal fun getAnimator(): ValueAnimator? {
+        return shimmerAnimator
     }
 }
