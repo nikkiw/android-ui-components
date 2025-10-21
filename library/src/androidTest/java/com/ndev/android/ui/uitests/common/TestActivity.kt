@@ -11,7 +11,6 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import com.ndev.android.ui.shimmer.ShimmerView
 
-// TestActivity: can inflate layout or create views by class
 class TestActivity : AppCompatActivity() {
     companion object {
         // If layout ID is passed - inflate it
@@ -40,6 +39,7 @@ class TestActivity : AppCompatActivity() {
             return
         }
 
+        // default dynamic layout (ScrollView + container)
         val scrollView = ScrollView(this)
         val container = LinearLayout(this).apply {
             id = View.generateViewId()
