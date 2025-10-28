@@ -4,7 +4,7 @@
     <string name="nav_drawer_close">"Close navigation"</string>
     <string name="nav_header_text2">"ShimmerView demo"</string>
     <string name="basic_shimmer">"Basic ShimmerView"</string>
-    <string name="basic_shimmer_gpu">"Basic ShimmerView (GPU)"</string>
+    <string name="basic_shimmer_opt">"Basic ShimmerView (Optimized)"</string>
     <string name="list_shimmer">"ShimmerView in lists"</string>
     <string name="card_shimmer">"ShimmerView for cards"</string>
     <string name="control_shimmer">"ShimmerView control"</string>

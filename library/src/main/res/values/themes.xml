@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Ndev_Shimmer_Default">
+        <item name="shimmerBaseColor">#EEEEEE</item>
+        <item name="shimmerHighlightColor">#FFFFFF</item>
+        <item name="shimmerEdgeColor">@android:color/transparent</item>
+        <item name="shimmerOrientation">horizontal</item>
+        <item name="shimmerDirection">forward</item>
+        <item name="shimmerHighlightWidth">0.2</item>
+        <item name="shimmerCenterPos">0.5</item>
+        <item name="shimmerAlpha">1.0</item>
+        <item name="shimmerDuration">1500</item>
+        <item name="shimmerAutoStart">true</item>
+        <item name="shimmerUseAdaptiveThrottling">true</item>
+    </style>
+</resources>

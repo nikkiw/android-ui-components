@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.ndev.android.ui.shimmer.ShimmerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/shimmer_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    app:shimmerAutoStart="true"
+    app:shimmerBaseColor="?attr/colorSurface"
+    app:shimmerColors="@array/shimmer_colors_preview"
+    app:shimmerDirection="forward"
+    app:shimmerDuration="1200"
+    app:shimmerHighlightColor="?attr/colorOnSurface"
+    app:shimmerHighlightWidth="0.25"
+    app:shimmerOrientation="horizontal"
+    tools:shimmerColors="@array/shimmer_colors_preview"
+    tools:shimmerDuration="900">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -14,7 +14,8 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.ndev.android.ui.sample.R
 import com.ndev.android.ui.shimmer.ShimmerView
-import com.ndev.android.ui.shimmer.ShimmerViewGPU
+import com.ndev.android.ui.shimmer.ShimmerViewOpt
+
 
 class BasicShimmerFragment : Fragment() {
 
@@ -63,13 +64,13 @@ class BasicShimmerFragment : Fragment() {
         // Customizing the control buttons
         view.findViewById<Button>(R.id.btn_start).setOnClickListener {
             (shimmerView as? ShimmerView)?.startShimmer()
-            (shimmerView as? ShimmerViewGPU)?.startShimmer()
+            (shimmerView as? ShimmerViewOpt)?.startShimmer()
             updateStatus(R.string.base_shimmer_status_shimmer_start)
         }
 
         view.findViewById<Button>(R.id.btn_stop).setOnClickListener {
             (shimmerView as? ShimmerView)?.stopShimmer()
-            (shimmerView as? ShimmerViewGPU)?.stopShimmer()
+            (shimmerView as? ShimmerViewOpt)?.stopShimmer()
             updateStatus(R.string.base_shimmer_status_shimmer_stop)
         }
 
@@ -117,7 +118,7 @@ class BasicShimmerFragment : Fragment() {
             val realContent = layoutInflater.inflate(R.layout.item_real_content, shimmerView, false)
             shimmerView.addView(realContent)
             (shimmerView as? ShimmerView)?.stopShimmer()
-            (shimmerView as? ShimmerViewGPU)?.stopShimmer()
+            (shimmerView as? ShimmerViewOpt)?.stopShimmer()
             buttonContent.text = getString(R.string.base_shimmer_shimmer)
             updateStatus(R.string.base_shimmer_status_content)
         } else {
@@ -125,7 +126,7 @@ class BasicShimmerFragment : Fragment() {
             shimmerView.removeAllViews()
             addPlaceholderContent()
             (shimmerView as? ShimmerView)?.startShimmer()
-            (shimmerView as? ShimmerViewGPU)?.startShimmer()
+            (shimmerView as? ShimmerViewOpt)?.startShimmer()
             buttonContent.text = getString(R.string.base_shimmer_content)
             updateStatus(R.string.base_shimmer_status_placeholder)
         }

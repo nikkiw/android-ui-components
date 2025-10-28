@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Для preview в layout'е можно добавить более мягкий набор -->
+    <array name="shimmer_colors_preview">
+        <item>#EEEEEE</item>
+        <item>#F7F7F7</item>
+        <item>#EEEEEE</item>
+    </array>
+</resources>

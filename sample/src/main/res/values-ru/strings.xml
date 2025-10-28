@@ -4,7 +4,7 @@
     <string name="nav_drawer_close">"Закрыть навигацию"</string>
     <string name="nav_header_text2">"Демонстрация ShimmerView"</string>
     <string name="basic_shimmer">"Базовый ShimmerView"</string>
-    <string name="basic_shimmer_gpu">"Базовый ShimmerView (GPU)"</string>
+    <string name="basic_shimmer_opt">"Базовый ShimmerView (Оптимизированный)"</string>
     <string name="list_shimmer">"ShimmerView в списках"</string>
     <string name="card_shimmer">"ShimmerView для карточек"</string>
     <string name="control_shimmer">"Управление ShimmerView"</string>

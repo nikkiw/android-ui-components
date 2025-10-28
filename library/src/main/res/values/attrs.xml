@@ -6,4 +6,36 @@
         <attr name="gridCols" format="integer" />
         <attr name="overlayColor" format="color" />
     </declare-styleable>
+
+
+
+    <declare-styleable name="ShimmerView">
+        <!-- Colors: either individual colors or a reference to a color-array resource -->
+        <attr name="shimmerBaseColor" format="color" />
+        <attr name="shimmerHighlightColor" format="color" />
+        <attr name="shimmerEdgeColor" format="color" />
+        <!-- Optional: use an @array of colors for more complex gradients -->
+        <attr name="shimmerColors" format="reference" />
+
+        <!-- Orientation & direction -->
+        <attr name="shimmerOrientation">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+            <enum name="diagonal" value="2" />
+        </attr>
+        <attr name="shimmerDirection">
+            <enum name="forward" value="0" />
+            <enum name="reverse" value="1" />
+        </attr>
+
+        <!-- Visual tuning -->
+        <attr name="shimmerHighlightWidth" format="float" /> <!-- fraction 0..1, default 0.2 -->
+        <attr name="shimmerCenterPos" format="float" /> <!-- fraction 0..1, default 0.5 -->
+        <attr name="shimmerAlpha" format="float" /> <!-- 0..1 -->
+
+        <!-- Timing & control -->
+        <attr name="shimmerDuration" format="integer" /> <!-- ms -->
+        <attr name="shimmerAutoStart" format="boolean" />
+        <attr name="shimmerUseAdaptiveThrottling" format="boolean" />
+    </declare-styleable>
 </resources>

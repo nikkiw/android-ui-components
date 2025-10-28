@@ -3,6 +3,7 @@ package com.ndev.android.ui.sample
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -24,12 +25,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setContentView(R.layout.activity_main)
 
-        // Инициализация DrawerLayout
+        // Initialize DrawerLayout
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
-        // Настройка ActionBar и DrawerToggle
+        // Setup ActionBar and DrawerToggle
         setSupportActionBar(findViewById(R.id.toolbar))
         toggle = ActionBarDrawerToggle(
             this, drawerLayout, findViewById(R.id.toolbar),
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Если это первый запуск, показываем первый фрагмент по умолчанию
+        // If this is the first launch, show the default fragment
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, BasicShimmerFragment())
@@ -46,10 +47,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navigationView.setCheckedItem(R.id.nav_basic_shimmer)
             supportActionBar?.title = getString(R.string.basic_shimmer)
         }
+
+        // The new way to handle the back button press
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // If the drawer is open, close it
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    // If the drawer is closed, perform the default action
+                    // (close the Activity or navigate to the previous fragment)
+                    // To do this, we temporarily disable our callback and invoke the system's back press event
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true // Re-enable it for future presses
+                }
+            }
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Обработка выбора пункта меню в навигационном drawer
+        // Handle navigation view item clicks here.
         val fragment: Fragment
         val title: String
 
@@ -59,9 +77,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 title = getString(R.string.basic_shimmer)
             }
 
-            R.id.nav_basic_shimmer_gpu -> {
-                fragment = BasicShimmerFragment.newInstance(R.layout.fragment_basic_shimmer_gpu)
-                title = getString(R.string.basic_shimmer_gpu)
+            R.id.nav_basic_shimmer_opt -> {
+                fragment = BasicShimmerFragment.newInstance(R.layout.fragment_basic_shimmer_opt)
+                title = getString(R.string.basic_shimmer_opt)
             }
 
             R.id.nav_progress_grid -> {
@@ -74,23 +92,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        // Заменяем текущий фрагмент выбранным
+        // Replace the current fragment with the new one
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
 
-        // Обновляем заголовок и закрываем drawer
+        // Update the title and close the drawer
         supportActionBar?.title = title
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    override fun onBackPressed() {
-        // Если drawer открыт, закрываем его при нажатии кнопки назад
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 }
